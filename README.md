@@ -1,13 +1,18 @@
 # RACING DEMO
 
+## Demo
+
+https://jibcore.github.io/racing-demo/
+
 ## Installation
 
 ```bash
   pnpm i
+  pnpm run dev
 ```
 
-## Run
+## Deployment (gh-pages)
 
 ```bash
-  pnpm run dev
+  pnpm run deploy
 ```

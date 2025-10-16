@@ -110,11 +110,9 @@ const actions = {
       return;
     }
 
-    const racesToRun = state.races.slice(state.currentRaceId);
-
-    for (const [index, race] of racesToRun.entries()) {
-      commit("SET_CURRENT_RACE", state.currentRaceId + index);
-      await dispatch("runSingleRace", race);
+    for (let i = state.currentRaceId; i < state.races.length; i++) {
+      commit("SET_CURRENT_RACE", i);
+      await dispatch("runSingleRace", state.races[i]);
     }
 
     commit("CLEAR_INTERVAL");
