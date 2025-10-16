@@ -45,21 +45,29 @@ const mutations = {
       racer.progress = progress;
     }
   },
+  SET_RACER_FINISH_ORDER(state, { raceId, racerId, finishOrder }) {
+    const race = state.races.find((r) => r.id === raceId);
+    const racer = race?.racers.find((r) => r.id === racerId);
+
+    if (racer && racer.finishOrder === null) {
+      racer.finishOrder = finishOrder;
+    }
+  },
   FINALIZE_RACE(state, raceId) {
     const race = state.races.find((r) => r.id === raceId);
     if (!race) {
       return;
     }
 
-    const sortedRacers = [...race.racers].sort((a, b) => {
-      if (b.progress === a.progress) {
-        return Math.random() - 0.5; // shuffle progress both progress - 100
-      }
-      return b.progress - a.progress;
-    });
+    const sortedRacers = [...race.racers].sort(
+      (a, b) => a.finishOrder - b.finishOrder
+    );
 
-    sortedRacers.forEach((racer, index) => {
-      racer.score = index + 1;
+    sortedRacers.forEach((sortedRacer, index) => {
+      const originalRacer = race.racers.find((r) => r.id === sortedRacer.id);
+      if (originalRacer) {
+        originalRacer.score = index + 1;
+      }
     });
   },
 };
@@ -83,6 +91,7 @@ const actions = {
         position: idx + 1,
         progress: 0,
         score: 0,
+        finishOrder: null,
       }));
 
       return {
@@ -126,6 +135,8 @@ const actions = {
     }
 
     return new Promise((resolve) => {
+      const finishedRacers = new Set();
+
       const racersData = race.racers.map((racer) => {
         const racerInfo = state.racers.find((r) => r.id === racer.id);
         return {
@@ -140,11 +151,27 @@ const actions = {
 
       const updateProgress = () => {
         racersData.forEach((racer) => {
+          if (racer.progress >= 100) {
+            return;
+          }
+
           racer.progress = increaseProgress(
             racer.progress,
             racer.condition,
             maxCondition
           );
+
+          if (racer.progress >= 100 && !finishedRacers.has(racer.id)) {
+            finishedRacers.add(racer.id);
+            const finishOrder = finishedRacers.size;
+
+            commit("SET_RACER_FINISH_ORDER", {
+              raceId: race.id,
+              racerId: racer.id,
+              finishOrder,
+            });
+          }
+
           commit("UPDATE_RACER_PROGRESS", {
             raceId: race.id,
             racerId: racer.id,

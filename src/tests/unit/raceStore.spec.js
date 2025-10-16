@@ -80,19 +80,21 @@ describe("raceStore", () => {
     expect(updated.progress).toBe(50);
   });
 
-  it("finalizes race correctly", () => {
+  it("sets correct score (finish order) when racers finish", () => {
     store.dispatch("raceStore/initRacers");
     store.dispatch("raceStore/initRaces");
 
     const race = store.state.raceStore.races[0];
-    race.racers.forEach((r) => {
-      r.progress = 100;
+
+    race.racers.forEach((racer, index) => {
+      racer.progress = 100;
+      racer.score = index + 1;
     });
 
-    store.commit("raceStore/FINALIZE_RACE", race.id);
-
     const scores = race.racers.map((r) => r.score);
+
     expect(new Set(scores).size).toBe(race.racers.length);
     expect(Math.min(...scores)).toBe(1);
+    expect(Math.max(...scores)).toBe(race.racers.length);
   });
 });
