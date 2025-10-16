@@ -48,10 +48,10 @@ export default {
 
 <style>
 .race-results-list {
-  height: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-height: 0;
   overflow-y: auto;
   position: relative;
 }

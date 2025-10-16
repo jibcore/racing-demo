@@ -26,7 +26,6 @@ export default {
 
 <style scoped>
 .race-track {
-  height: 100%;
   display: grid;
   gap: 20px;
   align-content: baseline;

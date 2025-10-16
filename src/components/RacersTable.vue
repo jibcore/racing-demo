@@ -45,7 +45,7 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  height: 100%;
+  min-height: 0;
   overflow: hidden;
 }
 .racers-table__title {
