@@ -1,10 +1,11 @@
 import { generateRacers } from "../utils/helpers";
 import { increaseProgress } from "../utils/progressHelper";
-
-const RACE_DISTANCES = [1200, 1400, 1600, 1800, 2000, 2200];
-const RACERS_PER_RACE = 10;
-const TOTAL_RACERS_AVAILABLE = 20;
-const TICK_INTERVAL_MS = 150;
+import {
+  RACE_DISTANCES,
+  RACERS_PER_RACE,
+  TOTAL_RACERS_AVAILABLE,
+  TICK_INTERVAL_MS,
+} from "../constants/raceConstants";
 
 const state = () => ({
   racers: [],

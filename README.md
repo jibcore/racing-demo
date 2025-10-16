@@ -16,3 +16,9 @@ https://jibcore.github.io/racing-demo/
 ```bash
   pnpm run deploy
 ```
+
+## Tests (gh-pages)
+
+```bash
+  pnpm run test
+```
